@@ -1,16 +1,37 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Globalization;
-using static Schichtplaner.Program;
-using System.Xml.Linq;
-using static System.Windows.Forms.AxHost;
-using static System.Net.Mime.MediaTypeNames;
+using System.IO;
+using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
+using static Schichtplaner.Program;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.AxHost;
 
 namespace Schichtplaner
 {
+    public static class AppPaths
+    {
+        public static string Root => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BereitschaftsDienstPlanner");
+        public static string Data => Path.Combine(Root, "Data");
+        public static string Plans => Path.Combine(Root, "Plans");
+        public static string Logs => Path.Combine(Root, "Logs");
+        public static string Backups => Path.Combine(Root, "Backups");
+        public static string Output => Path.Combine(Root, "Output");
+        public static string Settings => Path.Combine(Root, "Settings");
+
+        public static void EnsureAllDirectoriesExist()
+        {
+            Directory.CreateDirectory(Data);
+            Directory.CreateDirectory(Plans);
+            Directory.CreateDirectory(Logs);
+            Directory.CreateDirectory(Backups);
+            Directory.CreateDirectory(Output);
+            Directory.CreateDirectory(Settings);
+        }
+    }
 
     class ListViewItemComparer : IComparer<ListViewItem>
     {

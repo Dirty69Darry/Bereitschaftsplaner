@@ -12,8 +12,21 @@ using System.Windows.Forms;
 namespace Schichtplaner
 {
 
+
     internal static class Program
     {
+        //Datastorage
+       
+        public class Global
+        {
+            //Daten Speicherorte initialisieren
+            public static int selected_year = DateTime.Now.Year;
+            public static string employeeDataPath = Path.Combine(AppPaths.Data, "employees.dat");
+            public static string logPath = Path.Combine(AppPaths.Logs, $"log_{DateTime.Now:yyyy-MM-dd}.txt");
+            public static string planOutputPath = Path.Combine(AppPaths.Plans, $"Bereitschaftsplan_{selected_year}.xlsx");
+
+        }
+
 
         // Mitarbeiter
         public class Employee

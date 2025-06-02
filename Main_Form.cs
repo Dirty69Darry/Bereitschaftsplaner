@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Bibliography;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,13 +25,23 @@ namespace Schichtplaner
         DayOfWeek firstWeekday = DayOfWeek.Monday;
         int shiftPeriod = 7;
 
+        
+
+
         public Main_Form()
         {
             InitializeComponent();
-            byte[] key = Encoding.UTF8.GetBytes("16ByteSecretKey!");
-            empRepo = new EncryptedRepository<Employee>("employees.dat", key);
-            //LoadEmployeesIntoListBox();
 
+            //Ordnerstruktur anlegen
+            AppPaths.EnsureAllDirectoriesExist();
+
+            //Speicherort definieren
+
+
+            byte[] key = Encoding.UTF8.GetBytes("16ByteSecretKey!");
+            empRepo = new EncryptedRepository<Employee>(Global.employeeDataPath, key);
+            
+        
             //Progress für Export
             //Backgroundworker initialisieren
             exportWorker = new BackgroundWorker
@@ -382,14 +393,14 @@ namespace Schichtplaner
                 if (dlg.ShowDialog() != DialogResult.OK)
                     return;
 
-                int year = dlg.SelectedYear;
+                Global.selected_year = dlg.SelectedYear;
                 shiftPeriod = dlg.PeriodLengthDays;
                 firstWeekday = dlg.FirstWeekday;
 
                 //erster gewünschter Wochentag im Jahr
-                DateTime startDate = GetFirstWeekdayOfYear(year, firstWeekday);
+                DateTime startDate = GetFirstWeekdayOfYear(Global.selected_year, firstWeekday);
 
-                DateTime endDate = new DateTime(year + 1, 1, 1);
+                DateTime endDate = new DateTime(Global.selected_year + 1, 1, 1);
 
                 DateTime effectiveEnd;
                 if (shiftPeriod % 7 == 0)
@@ -412,8 +423,8 @@ namespace Schichtplaner
                 int expectedShifts = timeSpan.Days / shiftPeriod;
 
                 // 3. Mitarbeiter und Feiertage laden
-                var employees = new EmployeeManager("employees.dat", Encoding.UTF8.GetBytes("16ByteSecretKey!")).LoadAll();
-                var holidays = HolidayCalculator.GetHolidays(year);
+                var employees = new EmployeeManager(Global.employeeDataPath, Encoding.UTF8.GetBytes("16ByteSecretKey!")).LoadAll();
+                var holidays = HolidayCalculator.GetHolidays(Global.selected_year);
 
                 // 4. Plan erstellen
                 var planner = new ShiftPlanner(employees, holidays, rotationPeriodDays: shiftPeriod);
@@ -464,7 +475,7 @@ namespace Schichtplaner
             using (var sfd = new SaveFileDialog())
             {
                 sfd.Filter = "Excel-Datei (*.xlsx)|*.xlsx";
-                sfd.FileName = "Bereitschaft.xlsx";
+                sfd.FileName = Global.planOutputPath;
 
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {

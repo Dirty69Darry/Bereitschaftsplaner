@@ -204,7 +204,7 @@ namespace Schichtplaner
         private void Add_New_Employee_Button_Click(object sender, EventArgs e)
         {
             byte[] key = Encoding.UTF8.GetBytes("16ByteSecretKey!");
-            var manager = new EmployeeManager("employees.dat", key);
+            var manager = new EmployeeManager(Global.employeeDataPath, key);
             if (Forname_Textbox.Text.Length > 0 && Surname_Textbox.Text.Length > 0) 
             {
                 Guid new_empID = Guid.NewGuid();
