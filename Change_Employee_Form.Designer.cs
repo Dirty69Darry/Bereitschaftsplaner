@@ -1,4 +1,4 @@
-﻿namespace Schichtplaner
+﻿namespace Bereitschaftsplaner
 {
     partial class Change_Employee_Form
     {

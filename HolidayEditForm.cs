@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Schichtplaner
+namespace Bereitschaftsplaner
 {
     public partial class EditHolidayYearForm : Form
     {

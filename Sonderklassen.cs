@@ -6,11 +6,11 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
-using static Schichtplaner.Program;
+using static Bereitschaftsplaner.Program;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.AxHost;
 
-namespace Schichtplaner
+namespace Bereitschaftsplaner
 {
     public static class AppPaths
     {

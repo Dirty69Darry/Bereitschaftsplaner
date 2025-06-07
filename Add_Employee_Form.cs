@@ -8,10 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Schichtplaner.Program;
+using static Bereitschaftsplaner.Program;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace Schichtplaner
+namespace Bereitschaftsplaner
 {
     public partial class Add_Employee_Form : Form
     {

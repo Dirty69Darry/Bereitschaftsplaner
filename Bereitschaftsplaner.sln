@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schichtplaner", "Schichtplaner.csproj", "{6E16A306-B1F0-4278-868C-99C72C5F0D30}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bereitschaftsplaner", "Bereitschaftsplaner.csproj", "{6E16A306-B1F0-4278-868C-99C72C5F0D30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

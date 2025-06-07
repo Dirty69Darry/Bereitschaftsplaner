@@ -12,10 +12,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Schichtplaner.Program;
+using static Bereitschaftsplaner.Program;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace Schichtplaner
+namespace Bereitschaftsplaner
 {
     public partial class Main_Form : Form
     {
@@ -104,6 +104,7 @@ namespace Schichtplaner
         {
             progressBar1.Value = Math.Min(e.ProgressPercentage, progressBar1.Maximum);
             lb_Progress.Text = $"Fortschritt: {e.ProgressPercentage}%";
+
         }
 
         private void ExportWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -178,7 +179,7 @@ namespace Schichtplaner
                 //Update Progess
                 currentStep++;
                 int totalSteps = 2 + eintraege.Select(x => x.Name).Distinct().Count();
-                worker.ReportProgress(currentStep * 100 / totalSteps);
+                worker.ReportProgress(currentStep / totalSteps);
 
                 // Gesamtsumme je Mitarbeiter (ab Zeile + 2)
                 int summaryRow = zeile + 2;
@@ -272,9 +273,7 @@ namespace Schichtplaner
                                 cell.Style.Font.FontColor = XLColor.Gray;
                             }
 
-                            //Update Progress
-                            currentStep++;
-                            worker.ReportProgress(currentStep * 100 / totalSteps);
+
                         }
 
                         // 3.4) Rahmen (Border) um den gesamten Monatsblock (Box)
@@ -299,6 +298,10 @@ namespace Schichtplaner
 
                     // Spaltenbreiten an Inhalt anpassen
                     sheet.Columns().AdjustToContents();
+
+                    //Update Progress
+                    currentStep++;
+                    worker.ReportProgress(currentStep * 100/ totalSteps);
                 }
 
                 try

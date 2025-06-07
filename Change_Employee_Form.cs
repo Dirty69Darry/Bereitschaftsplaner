@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Schichtplaner.Program;
+using static Bereitschaftsplaner.Program;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace Schichtplaner
+namespace Bereitschaftsplaner
 {
     public partial class Change_Employee_Form : Form
     {
@@ -43,7 +43,7 @@ namespace Schichtplaner
         void Change_Employee_Form_Load()
         {
             byte[] key = Encoding.UTF8.GetBytes("16ByteSecretKey!");
-            var employees = LoadEmployeeList("employees.dat", key);
+            var employees = LoadEmployeeList(Global.employeeDataPath, key);
             
             if (employees.Any())
             {
@@ -110,7 +110,7 @@ namespace Schichtplaner
         private void Save_Changes_Button_Click(object sender, EventArgs e)
         {
             byte[] key = Encoding.UTF8.GetBytes("16ByteSecretKey!");
-            var manager = new EmployeeManager("employees.dat", key);
+            var manager = new EmployeeManager(Global.employeeDataPath, key);
 
 
             var emp = new Employee
@@ -151,7 +151,7 @@ namespace Schichtplaner
         private void Delete_Button_Click(object sender, EventArgs e)
         {
             byte[] key = Encoding.UTF8.GetBytes("16ByteSecretKey!");
-            var manager = new EmployeeManager("employees.dat", key);
+            var manager = new EmployeeManager(Global.employeeDataPath, key);
 
             manager.DeleteEmployee(employee_index);
 

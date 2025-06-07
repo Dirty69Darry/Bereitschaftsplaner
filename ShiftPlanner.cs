@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Schichtplaner.Program;
+using static Bereitschaftsplaner.Program;
 
-namespace Schichtplaner
+namespace Bereitschaftsplaner
 {
     internal class ShiftPlanner
     {
@@ -131,24 +131,7 @@ namespace Schichtplaner
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
     }
-    // Demo-Konsolenprogramm
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            // Beispielinitialisierung (Employee-Liste, Feiertage generieren, Rotation)
-            var employees = new EmployeeManager("employees.dat", Encoding.UTF8.GetBytes("16ByteSecretKey!")).LoadAll();
-            var holidays = HolidayCalculator.GetHolidays(2025); // Du musst eine Feiertags-Bibliothek oder eigene Logik implementieren
-
-            var planner = new ShiftPlanner(employees, holidays, rotationPeriodDays: 7);
-            var plan = planner.GeneratePlan(new DateTime(2025, 1, 1), new DateTime(2026, 1, 1));
-
-            // Ausgabe
-            foreach (var a in plan)
-                Console.WriteLine($"{a.Start:dd.MM.yyyy} - {a.End:dd.MM.yyyy}: {a.EmployeeId}");
-        }
-    }
-    */
+/*    */
     /// <summary>
     /// Platzhalter für Feiertagsberechnung
     /// </summary>

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-namespace Schichtplaner
+namespace Bereitschaftsplaner
 {
     public partial class ShiftPlanOptionsForm : Form
     {

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Schichtplaner
+namespace Bereitschaftsplaner
 {
 
 
@@ -21,7 +21,7 @@ namespace Schichtplaner
         {
             //Daten Speicherorte initialisieren
             public static int selected_year = DateTime.Now.Year;
-            public static string employeeDataPath = Path.Combine(AppPaths.Data, "employees.dat");
+            public static string employeeDataPath = Path.Combine(AppPaths.Data, "employees.team");
             public static string logPath = Path.Combine(AppPaths.Logs, $"log_{DateTime.Now:yyyy-MM-dd}.txt");
             public static string planOutputPath = Path.Combine(AppPaths.Plans, $"Bereitschaftsplan_{selected_year}.xlsx");
 
