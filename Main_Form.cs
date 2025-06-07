@@ -307,14 +307,6 @@ namespace Schichtplaner
 
                     //Final Update Progress
                     worker.ReportProgress(100);
-
-                    MessageBox.Show
-                        (
-                        "Excel-Datei erfolgreich gespeichert.",
-                        "Fertig", 
-                        MessageBoxButtons.OK, 
-                        MessageBoxIcon.Information
-                        );
                 }
                 catch (IOException ioEx)
                 {
