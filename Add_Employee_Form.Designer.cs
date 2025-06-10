@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Add_Employee_Form));
             this.Close_Button = new System.Windows.Forms.Button();
             this.Forename_Label = new System.Windows.Forms.Label();
             this.Surname_Label = new System.Windows.Forms.Label();
@@ -40,9 +41,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.VacationGroup = new System.Windows.Forms.GroupBox();
+            this.Vacation_ListView = new System.Windows.Forms.ListView();
             this.Vacation_Delete_Button = new System.Windows.Forms.Button();
             this.HolidayGroup = new System.Windows.Forms.GroupBox();
-            this.Vacation_ListView = new System.Windows.Forms.ListView();
             this.Holidays_ListView = new System.Windows.Forms.ListView();
             this.Add_New_Employee_Button = new System.Windows.Forms.Button();
             this.VacationGroup.SuspendLayout();
@@ -160,6 +161,17 @@
             this.VacationGroup.TabStop = false;
             this.VacationGroup.Text = "Urlaub bearbeiten";
             // 
+            // Vacation_ListView
+            // 
+            this.Vacation_ListView.HideSelection = false;
+            this.Vacation_ListView.Location = new System.Drawing.Point(65, 108);
+            this.Vacation_ListView.Name = "Vacation_ListView";
+            this.Vacation_ListView.Size = new System.Drawing.Size(242, 147);
+            this.Vacation_ListView.TabIndex = 17;
+            this.Vacation_ListView.UseCompatibleStateImageBehavior = false;
+            this.Vacation_ListView.View = System.Windows.Forms.View.Details;
+            this.Vacation_ListView.DoubleClick += new System.EventHandler(this.Vacation_ListView_SelectedIndexChanged);
+            // 
             // Vacation_Delete_Button
             // 
             this.Vacation_Delete_Button.Location = new System.Drawing.Point(196, 71);
@@ -179,17 +191,6 @@
             this.HolidayGroup.TabIndex = 17;
             this.HolidayGroup.TabStop = false;
             this.HolidayGroup.Text = "Bereitschaft an Feiertagen";
-            // 
-            // Vacation_ListView
-            // 
-            this.Vacation_ListView.HideSelection = false;
-            this.Vacation_ListView.Location = new System.Drawing.Point(65, 108);
-            this.Vacation_ListView.Name = "Vacation_ListView";
-            this.Vacation_ListView.Size = new System.Drawing.Size(242, 147);
-            this.Vacation_ListView.TabIndex = 17;
-            this.Vacation_ListView.UseCompatibleStateImageBehavior = false;
-            this.Vacation_ListView.View = System.Windows.Forms.View.Details;
-            this.Vacation_ListView.DoubleClick += new System.EventHandler(this.Vacation_ListView_SelectedIndexChanged);
             // 
             // Holidays_ListView
             // 
@@ -225,8 +226,10 @@
             this.Controls.Add(this.Surname_Label);
             this.Controls.Add(this.Forename_Label);
             this.Controls.Add(this.Close_Button);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Add_Employee_Form";
             this.Text = "Mitarbeiter hinzufügen";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Add_Employee_Form_FormClosed);
             this.VacationGroup.ResumeLayout(false);
             this.VacationGroup.PerformLayout();
             this.HolidayGroup.ResumeLayout(false);

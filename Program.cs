@@ -21,7 +21,13 @@ namespace Bereitschaftsplaner
         {
             //Daten Speicherorte initialisieren
             public static int selected_year = DateTime.Now.Year;
-            public static string employeeDataPath = Path.Combine(AppPaths.Data, "employees.team");
+            public static string defaultDirectory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), //default im AppData
+                "BereitschaftsPlaner",
+                "Data"
+            );
+            public static string employeeDataPath = Path.Combine(defaultDirectory, "Team.team");          
+            public static byte[] globalKEY = Encoding.UTF8.GetBytes("16ByteSecretKey!");
             public static string logPath = Path.Combine(AppPaths.Logs, $"log_{DateTime.Now:yyyy-MM-dd}.txt");
             public static string planOutputPath = Path.Combine(AppPaths.Plans, $"Bereitschaftsplan_{selected_year}.xlsx");
 
@@ -130,6 +136,15 @@ namespace Bereitschaftsplaner
             public EmployeeManager(string filePath, byte[] encryptionKey)
             {
                 _repo = new EncryptedRepository<Employee>(filePath, encryptionKey);
+            }
+
+            //Initialisiert Neue Liste
+            public void InitializeNewTeam(string newpath)
+            {
+                Global.employeeDataPath = newpath;
+                List<Employee> list = new List<Employee>();
+                list.Clear();
+                _repo.Save(list);
             }
 
             /// Lädt alle Mitarbeiter.

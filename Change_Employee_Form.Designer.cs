@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Change_Employee_Form));
             this.Surname_Textbox = new System.Windows.Forms.MaskedTextBox();
             this.Firstname_Textbox = new System.Windows.Forms.MaskedTextBox();
             this.Surname_Label = new System.Windows.Forms.Label();
@@ -39,6 +40,8 @@
             this.Holidays_ListView = new System.Windows.Forms.ListView();
             this.VacationGroup = new System.Windows.Forms.GroupBox();
             this.Vacation_ListView = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Vacation_Delete_Button = new System.Windows.Forms.Button();
             this.dateTimePicker_Begin = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
@@ -46,8 +49,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.Add_Holidays_Wish_Button = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.HolidayGroup.SuspendLayout();
             this.VacationGroup.SuspendLayout();
             this.SuspendLayout();
@@ -239,6 +240,7 @@
             this.Controls.Add(this.Firstname_Textbox);
             this.Controls.Add(this.Surname_Label);
             this.Controls.Add(this.Forename_Label);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Change_Employee_Form";
             this.Text = "Mitarbeiter Bearbeiten";
             this.HolidayGroup.ResumeLayout(false);

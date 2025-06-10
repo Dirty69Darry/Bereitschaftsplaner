@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -25,20 +26,22 @@ namespace Bereitschaftsplaner
         DayOfWeek firstWeekday = DayOfWeek.Monday;
         int shiftPeriod = 7;
 
-        
-
+        [DllImport("shell32.dll")]
+        static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+        const uint SHCNE_UPDATEDIR = 0x00002000;
+        const uint SHCNF_PATHW = 0x0005;
 
         public Main_Form()
         {
             InitializeComponent();
 
+
             //Ordnerstruktur anlegen
             AppPaths.EnsureAllDirectoriesExist();
 
-            //Speicherort definieren
 
 
-            byte[] key = Encoding.UTF8.GetBytes("16ByteSecretKey!");
+            byte[] key = Global.globalKEY;
             empRepo = new EncryptedRepository<Employee>(Global.employeeDataPath, key);
             
         
@@ -54,6 +57,22 @@ namespace Bereitschaftsplaner
             exportWorker.ProgressChanged += ExportWorker_ProgressChanged;
             exportWorker.RunWorkerCompleted += ExportWorker_RunWorkerCompleted;
 
+        }
+
+        private void Main_Form_Load(object sender, EventArgs e)
+        {
+            if (Directory.GetFiles(Global.defaultDirectory, "*.team").Length <= 0)
+            {
+                neuToolStripMenuItem_Click(sender, e);
+            }
+
+            this.Text = $"Bereitschaftsplan von {Path.GetFileNameWithoutExtension(Global.employeeDataPath)}";
+            LoadEmployeesIntoListBox();
+        }
+
+        private void RefreshShellFolder(string path)
+        {
+            SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATHW, Marshal.StringToHGlobalUni(path), IntPtr.Zero);
         }
 
         public void LoadEmployeesIntoListBox()
@@ -74,6 +93,11 @@ namespace Bereitschaftsplaner
             }
             catch (Exception ex) {MessageBox.Show(ex.Message); }   
             
+        }
+
+        private void Add_Employee_Form_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            LoadEmployeesIntoListBox();
         }
 
         private int GetWorkdays(DateTime start, DateTime ende)
@@ -344,14 +368,10 @@ namespace Bereitschaftsplaner
 
         private void Add_Employee_Button_Click(object sender, EventArgs e)
         {
+
             Add_Employee_Form add_employee = new Add_Employee_Form();
-
             add_employee.Show();
-        }
-
-        private void Load_Employee_Button_Click(object sender, EventArgs e)
-        {
-            LoadEmployeesIntoListBox();
+            add_employee.FormClosed += Add_Employee_Form_FormClosed;
         }
 
         private void Change_Employee_Button_Click(object sender, EventArgs e)
@@ -500,16 +520,104 @@ namespace Bereitschaftsplaner
 
                 }
 
+            }
+        }
 
+        private void infoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var version = assembly.GetName().Version?.ToString() ?? "unbekannt";
+
+            string productName = Application.ProductName;
+            string company = Application.CompanyName;
+            string info = $"Programm: {productName}\n" +
+                          $"Herausgeber: {company}\n" +
+                          $"Version: {version}";
+
+            MessageBox.Show(info, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);        
+
+    }
+
+        private void neuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string defaultFolder = Global.defaultDirectory;
+
+            // Ordner erstellen, falls er noch nicht existiert
+            if (!Directory.Exists(defaultFolder))
+            {
+                Directory.CreateDirectory(defaultFolder);
             }
 
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "Teamdateien (*.team)|*.team";
+                saveFileDialog.Title = "Neue Teamdatei erstellen";
+                saveFileDialog.InitialDirectory = defaultFolder;
+                saveFileDialog.FileName = "neues_Team.team"; 
 
+                Employee_ListView.Items.Clear();
 
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = saveFileDialog.FileName;
 
+                    empRepo = new EncryptedRepository<Employee>(filePath, Global.globalKEY);
+                    var manager = new EmployeeManager(filePath,Global.globalKEY);
+                    manager.InitializeNewTeam(filePath);
+                    
+                    MessageBox.Show($"Datei erstellt:\n{Path.GetFileName(filePath)}", "Neu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    this.Text = $"Bereitschaftsplan von {Path.GetFileNameWithoutExtension(Global.employeeDataPath)}";
+                    LoadEmployeesIntoListBox();
+                }
+            }
         }
-   
 
-    
+        private void öffnenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string defaultDirectory = Global.defaultDirectory;
+
+            if (!Directory.Exists(defaultDirectory))
+                Directory.CreateDirectory(defaultDirectory);
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = defaultDirectory;
+                openFileDialog.Filter = "Teamdateien (*.team)|*.team";
+                openFileDialog.Title = "Teamdatei öffnen";
+                openFileDialog.RestoreDirectory = true; //Löscht Cache beim Schließen des Dialogfensters?
+
+                RefreshShellFolder(defaultDirectory);
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+
+                    try
+                    {
+                        var key = Global.globalKEY;
+                        var manager = new EmployeeManager(filePath, key);
+
+                        empRepo = new EncryptedRepository<Employee>(filePath,key);
+                        var employeeList = manager.LoadAll();
+
+                        // Speichere und zeige den aktiven Pfad
+                        Global.employeeDataPath = filePath;
+                        
+                        // Lade die Mitarbeiterliste in dein UI z. B. ListView
+                        LoadEmployeesIntoListBox();
+
+                        this.Text = $"Bereitschaftplan von {Path.GetFileNameWithoutExtension(filePath)}";
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Fehler beim Laden der Datei:\n" + ex.Message, "Ladefehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
     }
 
 

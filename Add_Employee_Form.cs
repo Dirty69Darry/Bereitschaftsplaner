@@ -205,6 +205,7 @@ namespace Bereitschaftsplaner
         {
             byte[] key = Encoding.UTF8.GetBytes("16ByteSecretKey!");
             var manager = new EmployeeManager(Global.employeeDataPath, key);
+
             if (Forname_Textbox.Text.Length > 0 && Surname_Textbox.Text.Length > 0) 
             {
                 Guid new_empID = Guid.NewGuid();
@@ -232,7 +233,6 @@ namespace Bereitschaftsplaner
                         Enum.TryParse<HolidayType>(holidayType, out var result) && 
                         Enum.IsDefined(typeof(HolidayType), result))
                     {
-
                         emp.UpdateLastHolidayYear((HolidayType)result, year);
                     }   
                 }
@@ -241,6 +241,11 @@ namespace Bereitschaftsplaner
                 this.Close();
             }
             else { MessageBox.Show("Geben Sie einen Vornamen und einen Nachnamen ein"); }
+        }
+
+        private void Add_Employee_Form_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
         }
     }
 }

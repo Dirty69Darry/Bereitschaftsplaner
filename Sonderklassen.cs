@@ -14,7 +14,7 @@ namespace Bereitschaftsplaner
 {
     public static class AppPaths
     {
-        public static string Root => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BereitschaftsDienstPlanner");
+        public static string Root => Path.Combine(AppDomain.CurrentDomain.BaseDirectory);
         public static string Data => Path.Combine(Root, "Data");
         public static string Plans => Path.Combine(Root, "Plans");
         public static string Logs => Path.Combine(Root, "Logs");
